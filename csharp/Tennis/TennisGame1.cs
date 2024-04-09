@@ -3,10 +3,10 @@ namespace Tennis
     public class TennisGame1 : ITennisGame
     {
         private readonly string _playerOneName;
+        private readonly string _playerTwoName;
         
         private int _playerOneScore;
         private int _playerTwoScore;
-        private string _playerTwoName;
 
         public TennisGame1(string playerOneName, string playerTwoName)
         {
