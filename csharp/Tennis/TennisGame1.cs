@@ -2,9 +2,10 @@ namespace Tennis
 {
     public class TennisGame1 : ITennisGame
     {
+        private readonly string _playerOneName;
+        
         private int _playerOneScore;
         private int _playerTwoScore;
-        private string _playerOneName;
         private string _playerTwoName;
 
         public TennisGame1(string playerOneName, string playerTwoName)
@@ -15,7 +16,7 @@ namespace Tennis
 
         public void WonPoint(string playerName)
         {
-            if (playerName == "player1")
+            if (playerName == _playerOneName)
                 _playerOneScore += 1;
             else
                 _playerTwoScore += 1;
@@ -46,10 +47,10 @@ namespace Tennis
             else if (_playerOneScore >= 4 || _playerTwoScore >= 4)
             {
                 var minusResult = _playerOneScore - _playerTwoScore;
-                if (minusResult == 1) score = "Advantage player1";
-                else if (minusResult == -1) score = "Advantage player2";
-                else if (minusResult >= 2) score = "Win for player1";
-                else score = "Win for player2";
+                if (minusResult == 1) score = $"Advantage {_playerOneName}";
+                else if (minusResult == -1) score = $"Advantage {_playerTwoName}";
+                else if (minusResult >= 2) score = $"Win for {_playerOneName}";
+                else score = $"Win for {_playerTwoName}";
             }
             else
             {
