@@ -18,7 +18,12 @@ namespace Tennis
                 new LoveAllStrategy(),
                 new FifteenAllStrategy(),
                 new ThirtyAllStrategy(),
-                new DeuceStrategy());
+                new DeuceStrategy(),
+                new AdvantagePlayerOneStrategy(),
+                new AdvantagePlayerTwoStrategy(),
+                new PlayerOneWinStrategy(),
+                new PlayerTwoWinStrategy()
+                );
         }
 
         public void WonPoint(string playerName)
@@ -49,39 +54,33 @@ namespace Tennis
             
             if (_playerOne.Score >= 4 || _playerTwo.Score >= 4)
             {
-                var minusResult = _playerOne.Score - _playerTwo.Score;
-                if (minusResult == 1) score = $"Advantage {_playerOne.Name}";
-                else if (minusResult == -1) score = $"Advantage {_playerTwo.Name}";
-                else if (minusResult >= 2) score = $"Win for {_playerOne.Name}";
-                else score = $"Win for {_playerTwo.Name}";
+                return _strategy.GetScore(_playerOne, _playerTwo);
             }
-            else
-            {
-                for (var i = 1; i < 3; i++)
-                {
-                    int tempScore;
-                    if (i == 1) tempScore = _playerOne.Score;
-                    else
-                    {
-                        score += "-";
-                        tempScore = _playerTwo.Score;
-                    }
 
-                    switch (tempScore)
-                    {
-                        case 0:
-                            score += "Love";
-                            break;
-                        case 1:
-                            score += "Fifteen";
-                            break;
-                        case 2:
-                            score += "Thirty";
-                            break;
-                        case 3:
-                            score += "Forty";
-                            break;
-                    }
+            for (var i = 1; i < 3; i++)
+            {
+                int tempScore;
+                if (i == 1) tempScore = _playerOne.Score;
+                else
+                {
+                    score += "-";
+                    tempScore = _playerTwo.Score;
+                }
+
+                switch (tempScore)
+                {
+                    case 0:
+                        score += "Love";
+                        break;
+                    case 1:
+                        score += "Fifteen";
+                        break;
+                    case 2:
+                        score += "Thirty";
+                        break;
+                    case 3:
+                        score += "Forty";
+                        break;
                 }
             }
 
@@ -160,4 +159,57 @@ namespace Tennis
             return _strategies.Select(strategy => strategy.GetScore(playerOne, playerTwo)).FirstOrDefault(score => score != null);
         }
     }
+    
+    public class AdvantagePlayerOneStrategy : IScoringStrategy
+    {
+        public string GetScore(Player playerOne, Player playerTwo)
+        {
+            if (playerOne.Score >= 4 && playerOne.Score - playerTwo.Score == 1)
+            {
+                return $"Advantage {playerOne.Name}";
+            }
+
+            return null;
+        }
+    }
+    
+    public class AdvantagePlayerTwoStrategy : IScoringStrategy
+    {
+        public string GetScore(Player playerOne, Player playerTwo)
+        {
+            if (playerTwo.Score >= 4 && playerTwo.Score - playerOne.Score == 1)
+            {
+                return $"Advantage {playerTwo.Name}";
+            }
+
+            return null;
+        }
+    }
+
+    public class PlayerOneWinStrategy : IScoringStrategy
+    {
+        public string GetScore(Player playerOne, Player playerTwo)
+        {
+            if (playerOne.Score >= 4 && playerOne.Score - playerTwo.Score >= 2)
+            {
+                return $"Win for {playerOne.Name}";
+            }
+
+            return null;
+        }
+    }
+
+    public class PlayerTwoWinStrategy : IScoringStrategy
+    {
+        public string GetScore(Player playerOne, Player playerTwo)
+        {
+            if (playerTwo.Score >= 4 && playerTwo.Score - playerOne.Score>=2)
+            {
+                return $"Win for {playerTwo.Name}";
+            }
+
+            return null;
+        }
+    }
+
 }
