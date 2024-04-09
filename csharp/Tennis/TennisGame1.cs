@@ -60,7 +60,7 @@ namespace Tennis
             {
                 for (var i = 1; i < 3; i++)
                 {
-                    var tempScore = 0;
+                    int tempScore;
                     if (i == 1) tempScore = _playerOneScore;
                     else { score += "-"; tempScore = _playerTwoScore; }
                     switch (tempScore)
