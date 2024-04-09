@@ -58,6 +58,8 @@ namespace Tennis
             if (score.IsFinalScore)
             {
                 score.Winner.IncrementWins();
+                _playerOne.ResetScore();
+                _playerTwo.ResetScore();
             }
 
             return score.Description;

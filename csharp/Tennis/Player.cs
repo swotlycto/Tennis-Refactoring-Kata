@@ -16,4 +16,6 @@ public class Player
     public void IncrementScore() => Score++;
 
     public void IncrementWins() => Wins++;
+
+    public void ResetScore() => Score = 0;
 }

@@ -75,7 +75,7 @@ namespace Tennis.Tests
         }
 
         [Fact]
-        public void PlayerOne_NumberOfWins_Is_One_After_Win()
+        public void PlayerOne_Wins_Is_One_After_Win()
         {
             var playerOne = new Player("Alice");
             var playerTwo = new Player("Bob");
@@ -87,6 +87,21 @@ namespace Tennis.Tests
             game.WonPoint(playerOne.Name);
             Assert.Equal("Win for Alice", game.GetScore());
             Assert.Equal(1, playerOne.Wins);
+        }
+
+        [Fact]
+        public void Score_is_Love_All_after_win()
+        {
+            var playerOne = new Player("Alice");
+            var playerTwo = new Player("Bob");
+            
+            var game = new TennisGame1(playerOne, playerTwo);
+            game.WonPoint(playerOne.Name);
+            game.WonPoint(playerOne.Name);
+            game.WonPoint(playerOne.Name);
+            game.WonPoint(playerOne.Name);
+            Assert.Equal("Win for Alice", game.GetScore());
+            Assert.Equal("Love-All", game.GetScore());
         }
     }
 }
