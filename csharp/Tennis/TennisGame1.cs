@@ -8,14 +8,14 @@ namespace Tennis
     {
         private readonly Player _playerOne;
         private readonly Player _playerTwo;
-        private readonly IScoringStrategy _strategy;
+        private readonly IScoringStrategy _scoringStrategy;
 
         public TennisGame1(string playerOneName, string playerTwoName)
         {
             _playerOne = new Player(playerOneName);
             _playerTwo = new Player(playerTwoName);
 
-            _strategy = new CompositeStrategy(
+            _scoringStrategy = new CompositeStrategy(
                 new LoveAllStrategy(),
                 new FifteenAllStrategy(),
                 new ThirtyAllStrategy(),
@@ -30,8 +30,7 @@ namespace Tennis
 
         public void WonPoint(string playerName)
         {
-            var player = GetPlayer(playerName);
-            player.IncrementScore();
+            GetPlayer(playerName).IncrementScore();
         }
 
         private Player GetPlayer(string name)
@@ -48,7 +47,7 @@ namespace Tennis
 
         public string GetScore()
         {
-            return _strategy.GetScore(_playerOne, _playerTwo);
+            return _scoringStrategy.GetScore(_playerOne, _playerTwo);
         }
     }
 
@@ -178,7 +177,7 @@ namespace Tennis
 
     public class DefaultStrategy : IScoringStrategy
     {
-        private static readonly IDictionary<Tuple<int, int>, string> Scores = new Dictionary<Tuple<int, int>, string>
+        private static readonly Dictionary<Tuple<int, int>, string> Scores = new()
         {
             {  Tuple.Create(0, 1), "Love-Fifteen" },
             {  Tuple.Create(0, 2), "Love-Thirty" },
