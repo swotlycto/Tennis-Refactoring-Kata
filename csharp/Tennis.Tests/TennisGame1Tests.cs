@@ -67,5 +67,11 @@ namespace Tennis.Tests
 
             Assert.Equal(expected, ((ITennisGame)game).GetScore());
         }
+        
+        [Fact]
+        public void WonPoint_throws_when_player_isnt_recognised()
+        {
+            Assert.Throws<ArgumentException>(() => new TennisGame1("Alice", "Bob").WonPoint("Charlie"));
+        }
     }
 }

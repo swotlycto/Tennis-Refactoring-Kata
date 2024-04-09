@@ -1,3 +1,5 @@
+using System;
+
 namespace Tennis
 {
     public class TennisGame1 : ITennisGame
@@ -16,6 +18,9 @@ namespace Tennis
 
         public void WonPoint(string playerName)
         {
+            if (!playerName.Equals(_playerOneName) && !playerName.Equals(_playerTwoName))
+                throw new ArgumentException($"Player '{playerName}' isn't recognised");
+            
             if (playerName == _playerOneName)
                 _playerOneScore += 1;
             else
