@@ -4,34 +4,39 @@ namespace Tennis
 {
     public class TennisGame1 : ITennisGame
     {
-        private readonly string _playerOneName;
-        private readonly string _playerTwoName;
-        
-        private int _playerOneScore;
-        private int _playerTwoScore;
+        private readonly Player _playerOne;
+        private readonly Player _playerTwo;
 
         public TennisGame1(string playerOneName, string playerTwoName)
         {
-            _playerOneName = playerOneName;
-            _playerTwoName = playerTwoName;
+            _playerOne = new Player(playerOneName);
+            _playerTwo = new Player(playerTwoName);
         }
 
         public void WonPoint(string playerName)
         {
-            if (playerName.Equals(_playerOneName))
-                _playerOneScore += 1;
-            else if (playerName.Equals(_playerTwoName))
-                _playerTwoScore += 1;
-            else
-                throw new ArgumentException($"Player '{playerName}' isn't recognised");
+            var player = GetPlayer(playerName);
+            player.IncrementScore();
+        }
+
+        private Player GetPlayer(string name)
+        {
+            if (name.Equals(_playerOne.Name))
+                return _playerOne;
+
+            if (name.Equals(_playerTwo.Name))
+                return _playerTwo;
+            
+            
+            throw new ArgumentException($"Player '{name}' isn't recognised");
         }
 
         public string GetScore()
         {
             var score = "";
-            if (_playerOneScore == _playerTwoScore)
+            if (_playerOne.Score == _playerTwo.Score)
             {
-                switch (_playerOneScore)
+                switch (_playerOne.Score)
                 {
                     case 0:
                         score = "Love-All";
@@ -48,21 +53,21 @@ namespace Tennis
 
                 }
             }
-            else if (_playerOneScore >= 4 || _playerTwoScore >= 4)
+            else if (_playerOne.Score >= 4 || _playerTwo.Score >= 4)
             {
-                var minusResult = _playerOneScore - _playerTwoScore;
-                if (minusResult == 1) score = $"Advantage {_playerOneName}";
-                else if (minusResult == -1) score = $"Advantage {_playerTwoName}";
-                else if (minusResult >= 2) score = $"Win for {_playerOneName}";
-                else score = $"Win for {_playerTwoName}";
+                var minusResult = _playerOne.Score - _playerTwo.Score;
+                if (minusResult == 1) score = $"Advantage {_playerOne.Name}";
+                else if (minusResult == -1) score = $"Advantage {_playerTwo.Name}";
+                else if (minusResult >= 2) score = $"Win for {_playerOne.Name}";
+                else score = $"Win for {_playerTwo.Name}";
             }
             else
             {
                 for (var i = 1; i < 3; i++)
                 {
                     int tempScore;
-                    if (i == 1) tempScore = _playerOneScore;
-                    else { score += "-"; tempScore = _playerTwoScore; }
+                    if (i == 1) tempScore = _playerOne.Score;
+                    else { score += "-"; tempScore = _playerTwo.Score; }
                     switch (tempScore)
                     {
                         case 0:
