@@ -60,9 +60,9 @@ namespace Tennis.Tests
             for (var i = 0; i < highestScore; i++)
             {
                 if (i < playerOneScore)
-                    ((ITennisGame)game).WonPoint(playerOneName);
+                    game.WonPoint(playerOneName);
                 if (i < playerTwoScore)
-                    ((ITennisGame)game).WonPoint(playerTwoName);
+                    game.WonPoint(playerTwoName);
             }
 
             Assert.Equal(expected, ((ITennisGame)game).GetScore());
