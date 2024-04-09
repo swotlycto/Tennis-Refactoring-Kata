@@ -18,13 +18,12 @@ namespace Tennis
 
         public void WonPoint(string playerName)
         {
-            if (!playerName.Equals(_playerOneName) && !playerName.Equals(_playerTwoName))
-                throw new ArgumentException($"Player '{playerName}' isn't recognised");
-            
-            if (playerName == _playerOneName)
+            if (playerName.Equals(_playerOneName))
                 _playerOneScore += 1;
-            else
+            else if (playerName.Equals(_playerTwoName))
                 _playerTwoScore += 1;
+            else
+                throw new ArgumentException($"Player '{playerName}' isn't recognised");
         }
 
         public string GetScore()
