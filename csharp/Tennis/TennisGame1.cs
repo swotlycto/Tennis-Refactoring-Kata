@@ -7,7 +7,7 @@ namespace Tennis
     {
         private readonly Player _playerOne;
         private readonly Player _playerTwo;
-        private readonly IStrategy _strategy;
+        private readonly IScoringStrategy _strategy;
 
         public TennisGame1(string playerOneName, string playerTwoName)
         {
@@ -15,10 +15,10 @@ namespace Tennis
             _playerTwo = new Player(playerTwoName);
 
             _strategy = new CompositeStrategy(
-                new LoveAllStrategy(_playerOne, _playerTwo),
-                new FifteenAllStrategy(_playerOne, _playerTwo),
-                new ThirtyAllStrategy(_playerOne, _playerTwo),
-                new DeuceStrategy(_playerOne, _playerTwo));
+                new LoveAllStrategy(),
+                new FifteenAllStrategy(),
+                new ThirtyAllStrategy(),
+                new DeuceStrategy());
         }
 
         public void WonPoint(string playerName)
@@ -44,7 +44,7 @@ namespace Tennis
             var score = "";
             if (_playerOne.Score == _playerTwo.Score)
             {
-                return _strategy.GetScore();
+                return _strategy.GetScore(_playerOne, _playerTwo);
             }
             
             if (_playerOne.Score >= 4 || _playerTwo.Score >= 4)
@@ -89,20 +89,11 @@ namespace Tennis
         }
     }
 
-    public class LoveAllStrategy : IStrategy
+    public class LoveAllStrategy : IScoringStrategy
     {
-        private readonly Player _playerOne;
-        private readonly Player _playerTwo;
-
-        public LoveAllStrategy(Player playerOne, Player playerTwo)
+        public string GetScore(Player playerOne, Player playerTwo)
         {
-            _playerOne = playerOne;
-            _playerTwo = playerTwo;
-        }
-
-        public string GetScore()
-        {
-            if (_playerOne.Score == _playerTwo.Score && _playerOne.Score == 0)
+            if (playerOne.Score == playerTwo.Score && playerOne.Score == 0)
             {
                 return "Love-All";
             }
@@ -111,20 +102,11 @@ namespace Tennis
         }
     }
 
-    public class FifteenAllStrategy : IStrategy
+    public class FifteenAllStrategy : IScoringStrategy
     {
-        private readonly Player _playerOne;
-        private readonly Player _playerTwo;
-
-        public FifteenAllStrategy(Player playerOne, Player playerTwo)
+        public string GetScore(Player playerOne, Player playerTwo)
         {
-            _playerOne = playerOne;
-            _playerTwo = playerTwo;
-        }
-
-        public string GetScore()
-        {
-            if (_playerOne.Score == _playerTwo.Score && _playerOne.Score == 1)
+            if (playerOne.Score == playerTwo.Score && playerOne.Score == 1)
             {
                 return "Fifteen-All";
             }
@@ -133,20 +115,11 @@ namespace Tennis
         }
     }
 
-    public class ThirtyAllStrategy : IStrategy
+    public class ThirtyAllStrategy : IScoringStrategy
     {
-        private readonly Player _playerOne;
-        private readonly Player _playerTwo;
-
-        public ThirtyAllStrategy(Player playerOne, Player playerTwo)
+        public string GetScore(Player playerOne, Player playerTwo)
         {
-            _playerOne = playerOne;
-            _playerTwo = playerTwo;
-        }
-
-        public string GetScore()
-        {
-            if (_playerOne.Score == _playerTwo.Score && _playerOne.Score == 2)
+            if (playerOne.Score == playerTwo.Score && playerOne.Score == 2)
             {
                 return "Thirty-All";
             }
@@ -155,20 +128,11 @@ namespace Tennis
         }
     }
 
-    public class DeuceStrategy : IStrategy
+    public class DeuceStrategy : IScoringStrategy
     {
-        private readonly Player _playerOne;
-        private readonly Player _playerTwo;
-
-        public DeuceStrategy(Player playerOne, Player playerTwo)
+        public string GetScore(Player playerOne, Player playerTwo)
         {
-            _playerOne = playerOne;
-            _playerTwo = playerTwo;
-        }
-
-        public string GetScore()
-        {
-            if (_playerOne.Score == _playerTwo.Score && _playerOne.Score > 2)
+            if (playerOne.Score == playerTwo.Score && playerOne.Score > 2)
             {
                 return "Deuce";
             }
@@ -177,24 +141,23 @@ namespace Tennis
         }
     }
 
-    public interface IStrategy
+    public interface IScoringStrategy
     {
-        string GetScore();
+        string GetScore(Player playerOne, Player playerTwo);
     }
 
-    public class CompositeStrategy : IStrategy
+    public class CompositeStrategy : IScoringStrategy
     {
-        private readonly IStrategy[] _strategies;
+        private readonly IScoringStrategy[] _strategies;
         
-        public CompositeStrategy(params IStrategy[] strategies)
+        public CompositeStrategy(params IScoringStrategy[] strategies)
         {
             _strategies = strategies;
         }
         
-        public string GetScore()
+        public string GetScore(Player playerOne, Player playerTwo)
         {
-            return _strategies.Select(strategy => strategy.GetScore()).FirstOrDefault(score => score != null);
+            return _strategies.Select(strategy => strategy.GetScore(playerOne, playerTwo)).FirstOrDefault(score => score != null);
         }
     }
-
 }
