@@ -4,7 +4,7 @@ public class PlayerTwoWinStrategy : IScoringStrategy
 {
     public Score GetScore(Player playerOne, Player playerTwo)
     {
-        if (playerTwo.Score >= 4 && playerTwo.Score - playerOne.Score >= 2)
+        if (playerTwo.HasBeaten(playerOne))
         {
             return new Score
             {
