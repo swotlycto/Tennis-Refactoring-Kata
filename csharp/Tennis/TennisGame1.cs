@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Tennis
@@ -166,7 +167,7 @@ namespace Tennis
     {
         public string GetScore(Player playerOne, Player playerTwo)
         {
-            if (playerTwo.Score >= 4 && playerTwo.Score - playerOne.Score>=2)
+            if (playerTwo.Score >= 4 && playerTwo.Score - playerOne.Score >= 2)
             {
                 return $"Win for {playerTwo.Name}";
             }
@@ -177,41 +178,34 @@ namespace Tennis
 
     public class DefaultStrategy : IScoringStrategy
     {
+        private static readonly IDictionary<Tuple<int, int>, string> Scores = new Dictionary<Tuple<int, int>, string>
+        {
+            {  Tuple.Create(0, 1), "Love-Fifteen" },
+            {  Tuple.Create(0, 2), "Love-Thirty" },
+            {  Tuple.Create(0, 3), "Love-Forty" },
+            
+            {  Tuple.Create(1, 0), "Fifteen-Love" },
+            {  Tuple.Create(2, 0), "Thirty-Love" },
+            {  Tuple.Create(3, 0), "Forty-Love" },
+            
+            {  Tuple.Create(1, 2), "Fifteen-Thirty" },
+            {  Tuple.Create(1, 3), "Fifteen-Forty" },
+            
+            {  Tuple.Create(2, 1), "Thirty-Fifteen" },
+            {  Tuple.Create(2, 3), "Thirty-Forty" },
+            
+            {  Tuple.Create(3, 1), "Forty-Fifteen" },
+            {  Tuple.Create(3, 2), "Forty-Thirty" }
+        };
+        
         public string GetScore(Player playerOne, Player playerTwo)
         {
-            var score = "";
-            
-            for (var i = 1; i < 3; i++)
+            if (Scores.TryGetValue(Tuple.Create(playerOne.Score, playerTwo.Score), out var score))
             {
-                int tempScore;
-                if (i == 1)
-                {
-                    tempScore = playerOne.Score;
-                }
-                else
-                {
-                    score += "-";
-                    tempScore = playerTwo.Score;
-                }
-
-                switch (tempScore)
-                {
-                    case 0:
-                        score += "Love";
-                        break;
-                    case 1:
-                        score += "Fifteen";
-                        break;
-                    case 2:
-                        score += "Thirty";
-                        break;
-                    case 3:
-                        score += "Forty";
-                        break;
-                }
+                return score;
             }
 
-            return score;
+            return null;
         }
     }
 
