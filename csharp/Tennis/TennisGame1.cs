@@ -22,7 +22,8 @@ namespace Tennis
                 new AdvantagePlayerOneStrategy(),
                 new AdvantagePlayerTwoStrategy(),
                 new PlayerOneWinStrategy(),
-                new PlayerTwoWinStrategy()
+                new PlayerTwoWinStrategy(),
+                new DefaultStrategy()
                 );
         }
 
@@ -46,45 +47,7 @@ namespace Tennis
 
         public string GetScore()
         {
-            var score = "";
-            if (_playerOne.Score == _playerTwo.Score)
-            {
-                return _strategy.GetScore(_playerOne, _playerTwo);
-            }
-            
-            if (_playerOne.Score >= 4 || _playerTwo.Score >= 4)
-            {
-                return _strategy.GetScore(_playerOne, _playerTwo);
-            }
-
-            for (var i = 1; i < 3; i++)
-            {
-                int tempScore;
-                if (i == 1) tempScore = _playerOne.Score;
-                else
-                {
-                    score += "-";
-                    tempScore = _playerTwo.Score;
-                }
-
-                switch (tempScore)
-                {
-                    case 0:
-                        score += "Love";
-                        break;
-                    case 1:
-                        score += "Fifteen";
-                        break;
-                    case 2:
-                        score += "Thirty";
-                        break;
-                    case 3:
-                        score += "Forty";
-                        break;
-                }
-            }
-
-            return score;
+            return _strategy.GetScore(_playerOne, _playerTwo);
         }
     }
 
@@ -209,6 +172,46 @@ namespace Tennis
             }
 
             return null;
+        }
+    }
+
+    public class DefaultStrategy : IScoringStrategy
+    {
+        public string GetScore(Player playerOne, Player playerTwo)
+        {
+            var score = "";
+            
+            for (var i = 1; i < 3; i++)
+            {
+                int tempScore;
+                if (i == 1)
+                {
+                    tempScore = playerOne.Score;
+                }
+                else
+                {
+                    score += "-";
+                    tempScore = playerTwo.Score;
+                }
+
+                switch (tempScore)
+                {
+                    case 0:
+                        score += "Love";
+                        break;
+                    case 1:
+                        score += "Fifteen";
+                        break;
+                    case 2:
+                        score += "Thirty";
+                        break;
+                    case 3:
+                        score += "Forty";
+                        break;
+                }
+            }
+
+            return score;
         }
     }
 
