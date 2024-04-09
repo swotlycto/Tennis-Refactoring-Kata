@@ -2,7 +2,7 @@
 
 public class Score
 {
-    public bool IsFinalScore { get; init; }
+    public bool IsFinal { get; init; }
     
     public Player Winner { get; init; }
     

@@ -9,7 +9,7 @@ public class PlayerTwoWinStrategy : IScoringStrategy
             return new Score
             {
                 Description = $"Win for {playerTwo.Name}",
-                IsFinalScore = true,
+                IsFinal = true,
                 Winner = playerTwo
             };
         }

@@ -55,7 +55,7 @@ namespace Tennis
         {
             var score = _scoringStrategy.GetScore(_playerOne, _playerTwo);
 
-            if (score.IsFinalScore)
+            if (score.IsFinal)
             {
                 score.Winner.IncrementWins();
                 _playerOne.ResetScore();
