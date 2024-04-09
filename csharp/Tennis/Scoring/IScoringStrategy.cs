@@ -2,5 +2,5 @@
 
 public interface IScoringStrategy
 {
-    string GetScore(Player playerOne, Player playerTwo);
+    Score GetScore(Player playerOne, Player playerTwo);
 }

@@ -73,5 +73,20 @@ namespace Tennis.Tests
         {
             Assert.Throws<ArgumentException>(() => new TennisGame1("Alice", "Bob").WonPoint("Charlie"));
         }
+
+        [Fact]
+        public void PlayerOne_NumberOfWins_Is_One_After_Win()
+        {
+            var playerOne = new Player("Alice");
+            var playerTwo = new Player("Bob");
+            
+            var game = new TennisGame1(playerOne, playerTwo);
+            game.WonPoint(playerOne.Name);
+            game.WonPoint(playerOne.Name);
+            game.WonPoint(playerOne.Name);
+            game.WonPoint(playerOne.Name);
+            Assert.Equal("Win for Alice", game.GetScore());
+            Assert.Equal(1, playerOne.Wins);
+        }
     }
 }

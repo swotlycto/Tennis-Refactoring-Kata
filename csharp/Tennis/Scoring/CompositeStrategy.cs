@@ -11,7 +11,7 @@ public class CompositeStrategy : IScoringStrategy
         _strategies = strategies;
     }
         
-    public string GetScore(Player playerOne, Player playerTwo)
+    public Score GetScore(Player playerOne, Player playerTwo)
     {
         return _strategies.Select(strategy => strategy.GetScore(playerOne, playerTwo)).FirstOrDefault(score => score != null);
     }

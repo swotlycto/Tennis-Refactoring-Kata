@@ -2,11 +2,16 @@
 
 public class PlayerOneWinStrategy : IScoringStrategy
 {
-    public string GetScore(Player playerOne, Player playerTwo)
+    public Score GetScore(Player playerOne, Player playerTwo)
     {
         if (playerOne.Score >= 4 && playerOne.Score - playerTwo.Score >= 2)
         {
-            return $"Win for {playerOne.Name}";
+            return new Score
+            {
+                Description = $"Win for {playerOne.Name}",
+                IsFinalScore = true,
+                Winner = playerOne
+            };
         }
 
         return null;

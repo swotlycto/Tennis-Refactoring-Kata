@@ -10,10 +10,15 @@ namespace Tennis
         private readonly Player _playerTwo;
         private readonly IScoringStrategy _scoringStrategy;
 
-        public TennisGame1(string playerOneName, string playerTwoName)
+        public TennisGame1(string playerOneName, string playerTwoName) : this(new Player(playerOneName), new Player(playerTwoName))
         {
-            _playerOne = new Player(playerOneName);
-            _playerTwo = new Player(playerTwoName);
+
+        }
+
+        public TennisGame1(Player playerOne, Player playerTwo)
+        {
+            _playerOne = playerOne;
+            _playerTwo = playerTwo;
 
             _scoringStrategy = new CompositeStrategy(
                 new LoveAllStrategy(),
@@ -25,7 +30,8 @@ namespace Tennis
                 new PlayerOneWinStrategy(),
                 new PlayerTwoWinStrategy(),
                 new DefaultStrategy()
-                );
+            );
+
         }
 
         public void WonPoint(string playerName)
@@ -47,7 +53,14 @@ namespace Tennis
 
         public string GetScore()
         {
-            return _scoringStrategy.GetScore(_playerOne, _playerTwo);
+            var score = _scoringStrategy.GetScore(_playerOne, _playerTwo);
+
+            if (score.IsFinalScore)
+            {
+                score.Winner.IncrementWins();
+            }
+
+            return score.Description;
         }
     }
 }

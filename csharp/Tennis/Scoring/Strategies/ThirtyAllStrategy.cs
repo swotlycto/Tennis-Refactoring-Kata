@@ -2,11 +2,11 @@
 
 public class ThirtyAllStrategy : IScoringStrategy
 {
-    public string GetScore(Player playerOne, Player playerTwo)
+    public Score GetScore(Player playerOne, Player playerTwo)
     {
         if (playerOne.Score == playerTwo.Score && playerOne.Score == 2)
         {
-            return "Thirty-All";
+            return new Score { Description = "Thirty-All" };
         }
 
         return null;

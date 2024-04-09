@@ -25,8 +25,10 @@ public class DefaultStrategy : IScoringStrategy
         {  Tuple.Create(3, 2), "Forty-Thirty" }
     };
         
-    public string GetScore(Player playerOne, Player playerTwo)
+    public Score GetScore(Player playerOne, Player playerTwo)
     {
-        return Scores.TryGetValue(Tuple.Create(playerOne.Score, playerTwo.Score), out var score) ? score : null;
+        return Scores.TryGetValue(Tuple.Create(playerOne.Score, playerTwo.Score), out var description)
+            ? new Score { Description = description }
+            : null;
     }
 }
