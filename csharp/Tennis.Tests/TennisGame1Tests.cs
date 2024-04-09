@@ -56,21 +56,16 @@ namespace Tennis.Tests
         public void Tennis1Test(int playerOneScore, int playerTwoScore, string expected)
         {
             var game = new TennisGame1("player1", "player2");
-            CheckAllScores(game, playerOneScore, playerTwoScore, expected);
-        }
-
-        private void CheckAllScores(ITennisGame game, int playerOneScore, int playerTwoScore, string expectedScore)
-        {
             var highestScore = Math.Max(playerOneScore, playerTwoScore);
             for (var i = 0; i < highestScore; i++)
             {
                 if (i < playerOneScore)
-                    game.WonPoint("player1");
+                    ((ITennisGame)game).WonPoint("player1");
                 if (i < playerTwoScore)
-                    game.WonPoint("player2");
+                    ((ITennisGame)game).WonPoint("player2");
             }
 
-            Assert.Equal(expectedScore, game.GetScore());
+            Assert.Equal(expected, ((ITennisGame)game).GetScore());
         }
     }
 }
